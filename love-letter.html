@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>For My Love 💖</title>
+  <style>
+    :root {
+      --bg-1: #ff8fb1;
+      --bg-2: #a78bfa;
+      --bg-3: #f5a3ff;
+      --card: #ffffffee;
+      --text: #2b2233;
+      --accent: #ff5da2;
+      --soft: #ffe4ef;
+      --shadow: 0 20px 50px rgba(0,0,0,0.18);
+    }
+
+    /* Reset + base */
+    * { box-sizing: border-box; }
+    html, body { height: 100%; }
+    body {
+      margin: 0;
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+      color: var(--text);
+      overflow-x: hidden;
+      background: linear-gradient(120deg, var(--bg-1), var(--bg-2), var(--bg-3));
+      background-size: 200% 200%;
+      animation: gradientMove 14s ease-in-out infinite;
+    }
+
+    @keyframes gradientMove {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    /* Floating hearts background */
+    .hearts {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 1;
+      overflow: hidden;
+    }
+    .hearts span {
+      position: absolute;
+      bottom: -10vh;
+      display: block;
+      width: 24px; height: 24px;
+      background: var(--soft);
+      mask: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="black" d="M12 21s-7.5-4.438-10-8.25C.438 9.375 2.25 6 5.625 6 7.688 6 9.188 7.25 10 8.25 10.813 7.25 12.313 6 14.375 6 17.75 6 19.563 9.375 22 12.75 19.5 16.563 12 21 12 21z"/></svg>') center/contain no-repeat;
+      opacity: .7;
+      animation: floatUp var(--dur) linear infinite;
+      filter: drop-shadow(0 6px 10px rgba(0,0,0,.15));
+    }
+
+    @keyframes floatUp {
+      from { transform: translateY(0) translateX(0) rotate(0); opacity: .0; }
+      10% { opacity: .8; }
+      to { transform: translateY(-120vh) translateX(var(-- drift)) rotate(360deg); opacity: 0; }
+    }
+
+    /* Layout */
+    .wrap {
+      position: relative;
+      z-index: 2;
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+      padding: 40px 16px;
+    }
+
+    .card {
+      width: min(920px, 96vw);
+      background: var(--card);
+      border-radius: 28px;
+      box-shadow: var(--shadow);
+      overflow: hidden;
+      border: 1px solid rgba(255,255,255,.55);
+      backdrop-filter: blur(6px) saturate(1.2);
+      transform: translateY(20px);
+      opacity: 0;
+      animation: riseIn .9s ease .4s forwards;
+    }
+
+    @keyframes riseIn {
+      from { transform: translateY(24px) scale(.98); opacity: 0; }
+      to   { transform: translateY(0)   scale(1);   opacity: 1; }
+    }
+
+    .header {
+      background: radial-gradient(1200px 300px at 50% -10%, rgba(255,255,255,.65), transparent),
+                  linear-gradient(90deg, rgba(255,255,255,.6), rgba(255,255,255,0));
+      padding: 28px 28px 10px;
+    }
+    .title {
+      display: flex; align-items: center; gap: 12px; flex-wrap: wrap;
+    }
+    .title h1 { margin: 0; font-size: clamp(24px, 4.5vw, 44px); letter-spacing: .5px; }
+    .badge {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: var(--soft);
+      border: 1px solid #ffd0e3;
+      padding: 8px 12px;
+      border-radius: 999px;
+      font-weight: 600; font-size: 14px;
+    }
+
+    .photo {
+      width: 96px; height: 96px; border-radius: 20px; overflow: hidden; border: 3px solid white;
+      box-shadow: 0 8px 24px rgba(0,0,0,.2);
+      background: linear-gradient(135deg, #ffd0e3, #fef7fb);
+      display: grid; place-items: center; font-weight: 700; color: #c02f6c;
+    }
+
+    .content { padding: 8px 28px 28px; }
+
+    .meta {
+      display: flex; gap: 16px; flex-wrap: wrap; margin: 14px 0 18px;
+      color: #5c4e66; font-size: 14px;
+    }
+    .meta span { background: #fff7fb; border: 1px solid #ffe3f1; padding: 6px 10px; border-radius: 999px; }
+
+    .message {
+      font-size: clamp(16px, 2.2vw, 18px);
+      line-height: 1.85;
+      white-space: pre-wrap;
+      min-height: 240px;
+      border-left: 4px solid var(--accent);
+      background: linear-gradient(0deg, #ffffffaa, #ffffffaa), repeating-linear-gradient(transparent 0 30px, #ffe9f5 30px 31px);
+      padding: 18px 20px 18px 18px;
+      border-radius: 16px;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,.9);
+      position: relative;
+    }
+
+    /* Blinking caret for typewriter */
+    .caret {
+      width: 10px; height: 22px; display: inline-block; background: var(--accent);
+      vertical-align: -4px; margin-left: 3px; border-radius: 2px;
+      animation: blink 1s steps(1) infinite; opacity: 0;
+    }
+    @keyframes blink { 50% { opacity: 1; } }
+
+    .actions {
+      margin-top: 20px; display: flex; flex-wrap: wrap; gap: 10px;
+    }
+    button {
+      cursor: pointer;
+      border: none;
+      padding: 12px 16px;
+      border-radius: 14px;
+      font-weight: 700;
+      transition: transform .12s ease, box-shadow .2s ease, background .2s ease;
+    }
+    .primary {
+      background: linear-gradient(180deg, var(--accent), #f53d8d);
+      color: white; box-shadow: 0 10px 26px rgba(245, 61, 141, .35);
+    }
+    .primary:hover { transform: translateY(-2px); }
+    .ghost   { background: white; border: 1px solid #f0c7db; }
+
+    /* Footer note */
+    .foot {
+      margin-top: 10px; font-size: 12px; color: #6a5a74; opacity: .9;
+    }
+
+    /* Confetti canvas */
+    #confetti { position: fixed; inset: 0; pointer-events: none; z-index: 3; }
+
+    /* Small screens tweaks */
+    @media (max-width: 480px) {
+      .photo { width: 76px; height: 76px; border-radius: 16px; }
+      .message { min-height: 200px; }
+    }
+  </style>
+</head>
+<body>
+  <canvas id="confetti"></canvas>
+  <div class="hearts" id="hearts"></div>
+
+  <div class="wrap">
+    <article class="card" role="article" aria-label="Love Letter">
+      <header class="header">
+        <div class="title">
+          <div class="photo" id="photo">US</div>
+          <h1 id="heading">For my favorite person, <span id="gfName">Love</span> 💗</h1>
+          <span class="badge" title="This letter is animated with love">Made with ❤️ + JS</span>
+        </div>
+      </header>
+
+      <div class="content">
+        <div class="meta">
+          <span id="dateTag">Written today</span>
+          <span id="fromTag">From: <strong id="myName">Me</strong></span>
+        </div>
+
+        <div class="message" id="message" aria-live="polite"></div>
+        <div class="actions">
+          <button class="primary" id="replay">Replay Animation</button>
+          <button class="ghost" id="confettiBtn">Shower with Confetti 🎉</button>
+          <button class="ghost" id="printBtn">Save as PDF</button>
+        </div>
+        <div class="foot">Tip: Edit names, colors, and the message in the code. Works entirely offline in your browser.</div>
+      </div>
+    </article>
+  </div>
+
+  <script>
+    // ===== CUSTOMIZE HERE =====
+    const CONFIG = {
+      girlfriendName: "Babi",
+      myName: "Most Poging Asawa",
+      message: `Half a year, 6 months, 182 days of being together—Happy Happy Monthsary my Wifey, asawa ko, fiancé, my one and only Mrs. Loza; grabe no, sa dami ng pinagdaanan natin sa haba ng mga araw na yan, kinakaya natin kasi that’s what true love is all about—being here, caring, loving, making everything happen because we truly love each other; minsan naiisip ko kung kaya nga ba talaga natin hanggang dulo, sa hirap ng mga pinagdadaanan at sa pagbabago, pero kahit mahirap na tanong yan, we manage to do so—not with flying colors or just by keeping each other through terms and discussions, but by making each other feel it’s worth giving more to, worth the sacrifices, efforts, determination, and consistency; I may not be the most perfect boyfriend/husband/fiancé, but I promise I’ll always be here for you, love you, take care of you, make you smile, laugh, and feel good in every way possible (even in bed mwehehehe), and why am I doing this again you may ask—not because you asked, but because I did this days ago for LSM kasi wala pa kong maisip na maibibigay sayo HAHAHA, pero always keep in mind that everything in this message is from my heart, not just my mind; you’re one of a kind, my one and only, and you always will be—forever and always, sakin ka, at iyong iyo lang ako; I love you so damn much my Leahn Lintocan Loza—love, your most charming, pogi, at piiiiiiiiinaka minamahal mong boyfriend/husband—Happy 6th Monthsary my wife, I love you so much.`,
+      initials: "L + L",
+      hearts: 18,
+    };
+
+    // ===== Utility: date tag =====
+    const dateTag = document.getElementById('dateTag');
+    const today = new Date();
+    const fmt = today.toLocaleDateString(undefined, { year: 'numeric', month: 'long', day: 'numeric' });
+    dateTag.textContent = `Written on ${fmt}`;
+
+    // ===== Apply names & initials =====
+    document.getElementById('gfName').textContent = CONFIG.girlfriendName || 'Love';
+    document.getElementById('myName').textContent = CONFIG.myName || 'Me';
+    document.getElementById('photo').textContent = CONFIG.initials || 'US';
+
+    // ===== Floating hearts generation =====
+    const heartsWrap = document.getElementById('hearts');
+    function spawnHearts() {
+      heartsWrap.innerHTML = '';
+      const N = CONFIG.hearts || 14;
+      for (let i = 0; i < N; i++) {
+        const s = document.createElement('span');
+        const left = Math.random() * 100; // vw
+        const scale = .6 + Math.random() * 1.0;
+        const delay = Math.random() * 6;
+        const dur = 9 + Math.random() * 8;
+        const drift = (Math.random() * 100 - 50) + 'px';
+        s.style.left = left + 'vw';
+        s.style.transform = `scale(${scale})`;
+        s.style.animationDelay = delay + 's';
+        s.style.setProperty('--dur', dur + 's');
+        s.style.setProperty('-- drift', drift);
+        heartsWrap.appendChild(s);
+      }
+    }
+    spawnHearts();
+
+    // ===== Typewriter effect =====
+    const msgEl = document.getElementById('message');
+    const caret = document.createElement('span');
+    caret.className = 'caret';
+
+    function typeMessage(text, onDone) {
+      msgEl.textContent = '';
+      msgEl.appendChild(caret);
+      let i = 0;
+      const speed = 28; // ms per char
+      function tick() {
+        if (i < text.length) {
+          const ch = text[i++];
+          if (ch === '\n') {
+            msgEl.insertBefore(document.createElement('br'), caret);
+          } else {
+            const node = document.createTextNode(ch);
+            msgEl.insertBefore(node, caret);
+          }
+          setTimeout(tick, ch === '.' || ch === '!' || ch === '?' ? speed * 6 : speed);
+        } else {
+          caret.remove();
+          onDone && onDone();
+        }
+      }
+      setTimeout(tick, 400);
+    }
+
+    function startTyping() {
+      const personalized = CONFIG.message.replaceAll('[Your Name]', CONFIG.myName || 'Me');
+      typeMessage(personalized);
+    }
+
+    // Initial start
+    startTyping();
+
+    // ===== Buttons =====
+    document.getElementById('replay').addEventListener('click', () => {
+      spawnHearts();
+      startTyping();
+    });
+
+    document.getElementById('printBtn').addEventListener('click', () => {
+      window.print();
+    });
+
+    // ===== Confetti (simple canvas) =====
+    (function() {
+      const canvas = document.getElementById('confetti');
+      const ctx = canvas.getContext('2d');
+      let W, H, pieces = [], animId = null, life = 0;
+
+      function rand(min, max) { return Math.random() * (max - min) + min; }
+
+      function resize() { W = canvas.width = window.innerWidth; H = canvas.height = window.innerHeight; }
+      window.addEventListener('resize', resize); resize();
+
+      function initPieces() {
+        const count = Math.round(160 + Math.random() * 140);
+        pieces = Array.from({ length: count }, () => ({
+          x: rand(0, W),
+          y: rand(-H, 0),
+          r: rand(4, 10),
+          tilt: rand(-10, 10),
+          tiltAngle: 0,
+          speed: rand(1, 3.5),
+          alpha: rand(0.7, 1),
+        }));
+      }
+
+      function draw() {
+        ctx.clearRect(0, 0, W, H);
+        for (const p of pieces) {
+          ctx.save();
+          ctx.globalAlpha = p.alpha;
+          ctx.translate(p.x, p.y);
+          ctx.rotate(p.tiltAngle);
+          // rectangles look like paper bits
+          ctx.fillStyle = `hsl(${(p.x / W) * 360}, 90%, 60%)`;
+          ctx.fillRect(-p.r/2, -p.r/2, p.r, p.r * 0.6);
+          ctx.restore();
+
+          p.y += p.speed;
+          p.tiltAngle += 0.06;
+          p.x += Math.sin(p.tiltAngle) * 1.2;
+          if (p.y > H + 20) { p.y = -10; p.x = rand(0, W); }
+        }
+        life += 1;
+        if (life < 600) { // ~10s at 60fps
+          animId = requestAnimationFrame(draw);
+        } else {
+          cancelAnimationFrame(animId);
+          ctx.clearRect(0, 0, W, H);
+        }
+      }
+
+      document.getElementById('confettiBtn').addEventListener('click', () => {
+        life = 0; initPieces(); draw();
+      });
+    })();
+  </script>
+</body>
+</html>
